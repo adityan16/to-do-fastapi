@@ -1,5 +1,5 @@
 # api/auth.py
-from fastapi import FastAPI, APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.schemas.auth import UserRegister, UserLogin

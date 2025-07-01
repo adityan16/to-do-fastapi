@@ -1,11 +1,13 @@
 # auth.py
 
-from jose import JWTError, jwt
+import jwt
+
+from jwt import PyJWTError
+from typing import Annotated
+from datetime import datetime, timedelta
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
-from datetime import datetime, timedelta
-from typing import Annotated
 
 from app.db.database import get_db
 from app.services.utils import verify_password
@@ -27,11 +29,11 @@ ACCESS_TOKEN_EXPIRE_MINUTES = settings.ACCESS_TOKEN_EXPIRE_MINUTES
 #         return UserInDB(**user_dict)
 
 
-def authenticate_user(db, username: str, password: str):
+def authenticate_user(db: AsyncSession, username: str, password: str):
     user = get_user_by_username(db, username)
     if not user:
         return False
-    if not verify_password(password, user.hashed_password):
+    if not verify_password(password, user.password):
         return False
     return user
 
